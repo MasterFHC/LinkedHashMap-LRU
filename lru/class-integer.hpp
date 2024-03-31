@@ -5,6 +5,7 @@ class Integer {
 public:
 	static int counter;
 	int val;
+	Integer() {counter++;}
 	
 	Integer(int val) : val(val) {counter++;}
 	~Integer() {counter--;}

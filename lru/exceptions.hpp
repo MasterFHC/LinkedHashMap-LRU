@@ -13,6 +13,7 @@ protected:
 	std::string detail = "";
 public:
 	exception() {}
+    exception(std::string var, std::string det) : variant(var), detail(det) {}
 	exception(const exception &ec) : variant(ec.variant), detail(ec.detail) {}
 	virtual std::string what() {
 		return variant + " " + detail;
@@ -29,6 +30,8 @@ class runtime_error : public exception {
 
 class invalid_iterator : public exception {
 	/* __________________________ */
+    // variant = "invalid iterator";
+
 };
 
 class container_is_empty : public exception {
