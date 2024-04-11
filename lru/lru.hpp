@@ -191,13 +191,6 @@ public:
 	bool empty(){
         return begin() == end();
 	}
-    void print(){
-        cout<<"linker:"<<endl;
-        for(auto it=begin();it!=end();it++){
-            cout<<"("<<it.ptr->info->first<<","<<it.ptr->info->second<<") ";
-        }
-        cout<<endl;
-    }
 };
 
 template<
@@ -283,12 +276,6 @@ public:
 		}
 	};
     int get_hash(Key key) const{
-        // cout<<"key="<<key<<endl;
-        // std::cin.get();
-        // cout<<"size="<<size<<endl;
-        // std::cin.get();
-        // cout<<"hashed="<<Hash()(key)<<endl;
-        // std::cin.get();
         return (Hash()(key) % cap);
     }
 	void clear(){
@@ -326,10 +313,6 @@ public:
 	 * not find, return the end (point to nothing)
 	*/
 	iterator find(const Key &key)const{
-        // cout<<"hashmap:find"<<endl;
-        // std::cin.get();
-        // cout<<"get_hash(key)="<<get_hash(key)<<endl;
-        // std::cin.get();
         for(auto it=hash_table[get_hash(key)].begin();it!=hash_table[get_hash(key)].end();it++){
             if(Equal()((*it).first, key)){
                 iterator ret;
@@ -374,22 +357,6 @@ public:
         }
         return true;
 	}
-    void debug(){
-        cout<<"debug: hashmap"<<endl;
-        for(int i=0;i<cap;i++){
-            // std::cin.get();
-            if(hash_table[i].empty()){
-                continue;
-            }
-            cout<<"i="<<i<<":";
-            for(auto it=hash_table[i].begin();it!=hash_table[i].end();it++){
-                // cout<<"("<<(*it).first<<","<<(*it).second.ptr->info->second<<")"<<" ";
-                // cout<<"("<<(*it).first<<","<<(*it).second<<")"<<" ";
-                cout<<(*it).first.val<<" ";
-            }
-            cout<<endl;
-        }
-    }
 };
 
 template<
@@ -660,8 +627,6 @@ public:
 	 * add a new element and return true
 	*/
 	sjtu::pair<iterator, bool> insert(const value_type &value) {
-        // cout<<"value=("<<value.first<<","<<value.second<<")"<<endl;
-        // std::cin.get();
         auto hash_it = hash_map->find(value.first);
         if(hash_it != hash_map->end()){
             typename double_list<value_type>::iterator to_delete(hash_it.ptr->second.ptr, linker);
@@ -707,20 +672,10 @@ public:
 	 * point at nothing
 	*/
 	iterator find(const Key &key) {
-        // cout<<"finding1"<<endl;
-        // std::cin.get();
         auto it = hash_map->find(key);
         if(it == hash_map->end()) return end();
         else return it.ptr->second;
 	}
-    void debug(){
-        cout<<"debug:list"<<endl;
-        for(auto it=begin();it!=end();it++){
-            cout<<it.ptr->info->first.val<<" ";
-        }
-        cout<<endl;
-        hash_map->debug();
-    }
 };
 
 class lru{
@@ -743,19 +698,15 @@ public:
     */
     void save(const value_type &v) const{
         if(memo->find(v.first) != memo->end()){
-            // std::cout<<"found, insert size="<<memo->size()<<endl;
             memo->insert(v);
         }
         else{
             if(memo->size() == cap){
-                // std::cout<<"remove size="<<memo->size()<<endl;
                 memo->remove(memo->begin());
                 memo->insert(v);
             }
             else{
-                // std::cout<<"not found, now size="<<memo->size()<<endl;
                 memo->insert(v);
-                // std::cout<<"not found and inserted, now size="<<memo->size()<<endl;
             }
         }
     }
@@ -763,16 +714,13 @@ public:
      * return a pointer contain the value
     */
     Matrix<int>* get(const Integer &v) const{
-        // std::cout<<"getting, now size="<<memo->size()<<endl;
         if(memo->find(v) != memo->end()){
             Matrix<int> sec = memo->find(v).ptr->info->second;
             memo->remove(memo->find(v));
             memo->insert(value_type(v, sec));
-            // std::cout<<"get insert size="<<memo->size()<<endl;
             return &(memo->find(v).ptr->info->second);
         }
         else{
-            // std::cout<<"get nullptr size="<<memo->size()<<endl;
             return nullptr;
         }
     }
